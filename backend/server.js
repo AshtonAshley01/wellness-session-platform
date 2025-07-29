@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const authRoutes = require('./routes/auth.routes.js'); // Corrected import
+const authRoutes = require('./routes/auth.routes.js');
+const sessionRoutes = require('./routes/sessions.routes.js'); 
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ connectDB();
 
 // Define Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/sessions', sessionRoutes);
 
 const PORT = process.env.PORT || 5000;
 
