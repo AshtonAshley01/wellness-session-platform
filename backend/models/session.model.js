@@ -1,4 +1,5 @@
-import { Schema, model } from 'mongoose';
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const sessionSchema = new Schema({
     // This field links a session to the user who created it.
@@ -32,6 +33,6 @@ const sessionSchema = new Schema({
     timestamps: true
 });
 
-const Session = model('Session', sessionSchema);
+const Session = mongoose.model('Session', sessionSchema);
 
-export default Session;
+module.exports = Session;

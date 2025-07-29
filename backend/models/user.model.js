@@ -1,24 +1,24 @@
-
-import {Schema, model } from 'mongoose';
-
-
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
     email: {
         type: String,
         required: [true, 'Email is required'],
-        unique: true, // Ensures no two users can have the same email
-        trim: true, // Removes whitespace from both ends of a string
+        unique: true,
+        trim: true,
         lowercase: true
     },
-    password: {
+    // Changed 'password' to 'password_hash' to match assignment
+    password_hash: {
         type: String,
         required: [true, 'Password hash is required']
     }
 }, {
-    timestamps: true // Automatically adds createdAt and updatedAt fields
+    timestamps: true
 });
 
-const User = model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
-export default User;
+// Changed from 'export default' to 'module.exports'
+module.exports = User;
