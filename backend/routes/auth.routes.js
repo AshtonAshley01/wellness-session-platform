@@ -7,48 +7,49 @@ const User = require('../models/user.model');
 
 // POST /api/auth/register - User registration
 router.post('/register', async (req, res) => {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
 
     // Basic validation
-    if (!email || !password) {
+    if (!username || !email || !password) {
         return res.status(400).json({ message: 'Please enter all fields' });
     }
 
     try {
-        // Check for existing user
-        let user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ message: 'User already exists' });
+        // 2. Check if username or email already exists
+        let userByEmail = await User.findOne({ email });
+        if (userByEmail) {
+            return res.status(400).json({ message: 'User with that email already exists' });
+        }
+        let userByUsername = await User.findOne({ username });
+        if (userByUsername) {
+            return res.status(400).json({ message: 'Username is already taken' });
         }
 
-        // Create a user object (the hash will be added next)
+        // 3. Create new user with username
         const newUser = new User({
+            username,
             email,
-            password_hash: password // Placeholder, will be replaced by the hash
+            password_hash: password 
         });
 
-        // Hash password
         const salt = await bcrypt.genSalt(10);
         newUser.password_hash = await bcrypt.hash(password, salt);
-
-        // Save user to database
         await newUser.save();
 
-        // Create JWT payload
         const payload = {
             user: {
                 id: newUser.id
             }
         };
 
-        // Sign the token
         jwt.sign(
             payload,
             process.env.JWT_SECRET,
-            { expiresIn: 3600 }, // Token expires in 1 hour
+            { expiresIn: 3600 },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token });
+                // 4. Return username along with the token
+                res.json({ token, username: newUser.username });
             }
         );
 
@@ -94,7 +95,7 @@ router.post('/login', async (req, res) => {
             { expiresIn: 3600 },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token });
+                res.json({ token, username: user.username });
             }
         );
 
