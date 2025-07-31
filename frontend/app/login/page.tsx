@@ -1,15 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+// Interface for API response
+interface LoginResponse {
+  token: string;
+  username: string;
+}
+
+// Interface for API error response
+interface ApiErrorResponse {
+  message: string;
+}
+
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,21 +35,20 @@ export default function LoginPage() {
     }
 
     try {
-      const response = await axios.post('http://wellness-session-platform-2429.onrender.com/api/auth/login', {
-        email,
-        password,
-      });
-
+      const response = await axios.post<LoginResponse>(
+        'http://wellness-session-platform-2429.onrender.com/api/auth/login',
+        { email, password }
+      );
 
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.username);
-      
-      const username = response.data.username;
-      router.push(`/${username}`);
 
-    } catch (err: any) {
-      if (err.response && err.response.data.message) {
-        setError(err.response.data.message);
+      router.push(`/${response.data.username}`);
+    } catch (err: unknown) {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+
+      if (axiosError.response?.data?.message) {
+        setError(axiosError.response.data.message);
       } else {
         setError('An unexpected error occurred. Please try again.');
       }
