@@ -28,6 +28,40 @@ router.post('/save-draft', auth, async (req, res) => {
     }
 });
 
+
+// @route   PUT api/sessions/draft/:id
+// @desc    Update an existing session draft
+// @access  Private
+router.put('/draft/:id', auth, async (req, res) => {
+    const { title, tags, json_file_url } = req.body;
+
+    try {
+        let session = await Session.findById(req.params.id);
+
+        if (!session) {
+            return res.status(404).json({ msg: 'Session not found' });
+        }
+
+        // Make sure user owns the session
+        if (session.user_id.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'Not authorized' });
+        }
+
+        // Update fields
+        session.title = title;
+        session.tags = tags;
+        session.json_file_url = json_file_url;
+
+        const updatedSession = await session.save();
+        res.json(updatedSession);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
 // @route   POST api/sessions/publish
 // @desc    Publish a session
 // @access  Private

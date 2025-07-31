@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import SessionCard from '../components/SessionCard'; // Make sure the path is correct
+import SessionCard from '../components/SessionCard';
 
-// Define a type for the session data
 interface Session {
   _id: string;
   title: string;
@@ -27,63 +26,51 @@ export default function UserProfilePage({ params }: { params: { username: string
         router.push('/login');
         return;
       }
-
       try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
+        const config = { headers: { Authorization: `Bearer ${token}` } };
         const response = await axios.get('http://localhost:5000/api/sessions/my-sessions', config);
         setSessions(response.data);
       } catch (err) {
         setError('Failed to fetch your sessions.');
-        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchMySessions();
   }, [router]);
 
-  if (loading) {
-    return <p className="text-center mt-8">Loading your dashboard...</p>;
-  }
-
-  if (error) {
-    return <p className="text-center text-red-500 mt-8">{error}</p>;
-  }
+  if (loading) return <p className="text-center mt-8">Loading your dashboard...</p>;
+  if (error) return <p className="text-center text-red-500 mt-8">{error}</p>;
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">
-          Welcome, {params.username}!
-        </h1>
+        <h1 className="text-3xl font-bold">Welcome, {params.username}!</h1>
         <Link href="/editor" className="px-4 py-2 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">
-            Create New Session
+          Create New Session
         </Link>
       </div>
-
       <h2 className="text-2xl font-semibold mb-4 border-b pb-2">Your Sessions</h2>
       {sessions.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sessions.map((session) => (
-            <div key={session._id} className="relative">
-              <SessionCard title={session.title} tags={session.tags} />
-              <span className={`absolute top-2 right-2 text-xs font-semibold px-2 py-1 rounded-full ${
-                  session.status === 'draft' ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'
-                }`}>
-                {session.status}
-              </span>
-            </div>
+            // 1. Wrap the card in a Link component that points to the editor with the session ID
+            <Link href={`/editor/${session._id}`} key={session._id}>
+              <div className="relative block hover:scale-105 transition-transform duration-200">
+                <SessionCard title={session.title} tags={session.tags} />
+                <span className={`absolute top-2 right-2 text-xs font-semibold px-2 py-1 rounded-full ${
+                    session.status === 'draft' ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'
+                  }`}>
+                  {session.status}
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
       ) : (
         <div className="text-center py-10 px-6 bg-gray-50 rounded-lg">
-            <h3 className="text-lg font-medium text-gray-800">No sessions yet</h3>
-            <p className="text-gray-500 mt-1">Click "Create New Session" to get started.</p>
+          <h3 className="text-lg font-medium text-gray-800">No sessions yet</h3>
+          <p className="text-gray-500 mt-1">Click "Create New Session" to get started.</p>
         </div>
       )}
     </div>
