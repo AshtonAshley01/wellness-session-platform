@@ -66,7 +66,7 @@ export default function CreateSessionPage() {
       
       router.push('/my-sessions');
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError('Failed to submit session. Please try again.');
       console.error(err);
     } finally {

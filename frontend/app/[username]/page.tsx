@@ -72,7 +72,7 @@ export default function UserProfilePage() {
       ) : (
         <div className="text-center py-10 px-6 bg-gray-50 rounded-lg">
           <h3 className="text-lg font-medium text-gray-800">No sessions yet</h3>
-          <p className="text-gray-500 mt-1">Click "Create New Session" to get started.</p>
+          <p className="text-gray-500 mt-1">Click Create New Session to get started.</p>
         </div>
       )}
     </div>
