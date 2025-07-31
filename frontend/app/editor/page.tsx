@@ -57,11 +57,11 @@ export default function CreateSessionPage() {
 
     try {
       if (action === 'draft') {
-        await axios.post('http://wellness-session-platform-2429.onrender.com//api/sessions/save-draft', sessionData, config);
+        await axios.post('https://wellness-session-platform-2429.onrender.com//api/sessions/save-draft', sessionData, config);
       } else if (action === 'publish') {
-        const draftResponse = await axios.post('http://wellness-session-platform-2429.onrender.com/api/sessions/save-draft', sessionData, config);
+        const draftResponse = await axios.post('https://wellness-session-platform-2429.onrender.com/api/sessions/save-draft', sessionData, config);
         const sessionId = draftResponse.data._id;
-        await axios.post('http://wellness-session-platform-2429.onrender.com/api/sessions/publish', { id: sessionId }, config);
+        await axios.post('https://wellness-session-platform-2429.onrender.com/api/sessions/publish', { id: sessionId }, config);
       }
       
       router.push('/my-sessions');

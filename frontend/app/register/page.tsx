@@ -44,7 +44,7 @@ export default function RegisterPage() {
 
     try {
       const response = await axios.post<RegisterResponse>(
-        'http://wellness-session-platform-2429.onrender.com/api/auth/register',
+        'https://wellness-session-platform-2429.onrender.com/api/auth/register',
         { username, email, password }
       );
 

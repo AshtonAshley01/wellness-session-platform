@@ -30,7 +30,7 @@ export default function UserProfilePage() {
       }
       try {
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.get('http://wellness-session-platform-2429.onrender.com/api/sessions/my-sessions', config);
+        const response = await axios.get('https://wellness-session-platform-2429.onrender.com/api/sessions/my-sessions', config);
         setSessions(response.data);
       } catch (err) {
         setError('Failed to fetch your sessions.');

@@ -36,7 +36,7 @@ export default function LoginPage() {
 
     try {
       const response = await axios.post<LoginResponse>(
-        'http://wellness-session-platform-2429.onrender.com/api/auth/login',
+        'https://wellness-session-platform-2429.onrender.com/api/auth/login',
         { email, password }
       );
 

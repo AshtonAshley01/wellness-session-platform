@@ -25,7 +25,7 @@ export default function EditSessionPage() {
     const fetchSessionData = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.get(`http://wellness-session-platform-2429.onrender.com/api/sessions/my-sessions/${id}`, config);
+        const response = await axios.get(`https://wellness-session-platform-2429.onrender.com/api/sessions/my-sessions/${id}`, config);
         const { title, tags, json_file_url } = response.data;
         setTitle(title);
         setTags(tags.join(', '));
@@ -65,12 +65,12 @@ export default function EditSessionPage() {
     try {
       if (action === 'draft') {
         
-        await axios.put(`http://wellness-session-platform-2429.onrender.com/api/sessions/draft/${id}`, sessionData, config);
+        await axios.put(`https://wellness-session-platform-2429.onrender.com/api/sessions/draft/${id}`, sessionData, config);
       } else if (action === 'publish') {
         
-        await axios.put(`http://wellness-session-platform-2429.onrender.com/api/sessions/draft/${id}`, sessionData, config);
+        await axios.put(`https://wellness-session-platform-2429.onrender.com/api/sessions/draft/${id}`, sessionData, config);
         
-        await axios.post('http://wellness-session-platform-2429.onrender.com/api/sessions/publish', { id }, config);
+        await axios.post('https://wellness-session-platform-2429.onrender.com/api/sessions/publish', { id }, config);
       }
       
       router.push('/my-sessions');
