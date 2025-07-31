@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
 // This page will handle URLs like /editor/some-id
-export default function EditSessionPage({ params }: { params: { id: string } }) {
+export default function EditSessionPage() {
+  const params = useParams();
+  const id = params.id as string;
   const [title, setTitle] = useState('');
   const [tags, setTags] = useState('');
   const [jsonFileUrl, setJsonFileUrl] = useState('');
@@ -13,7 +15,6 @@ export default function EditSessionPage({ params }: { params: { id: string } }) 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const { id } = params; // Get the session ID from the URL
 
   useEffect(() => {
     const token = localStorage.getItem('token');

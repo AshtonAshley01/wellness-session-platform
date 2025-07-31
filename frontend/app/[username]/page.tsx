@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import SessionCard from '../components/SessionCard';
 
@@ -13,7 +13,9 @@ interface Session {
   status: 'draft' | 'published';
 }
 
-export default function UserProfilePage({ params }: { params: { username: string } }) {
+export default function UserProfilePage() {
+  const params = useParams();
+  const username = params.username as string;
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -45,7 +47,7 @@ export default function UserProfilePage({ params }: { params: { username: string
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Welcome, {params.username}!</h1>
+        <h1 className="text-3xl font-bold">Welcome, {username}!</h1>
         <Link href="/editor" className="px-4 py-2 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">
           Create New Session
         </Link>
