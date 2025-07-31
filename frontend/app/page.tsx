@@ -19,7 +19,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchSessions = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/sessions');
+        const response = await axios.get('https://wellness-session-platform-2429.onrender.com/api/sessions');
         setSessions(response.data);
       } catch (err) {
         setError('Failed to fetch sessions. Please try again later.');

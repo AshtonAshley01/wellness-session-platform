@@ -25,7 +25,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post('http://wellness-session-platform-2429.onrender.com/api/auth/register', {
         username,
         email,
         password,

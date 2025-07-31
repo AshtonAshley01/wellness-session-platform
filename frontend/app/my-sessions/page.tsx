@@ -38,7 +38,7 @@ export default function MySessionsPage() {
           },
         };
 
-        const response = await axios.get('http://localhost:5000/api/sessions/my-sessions', config);
+        const response = await axios.get('http://wellness-session-platform-2429.onrender.com/api/sessions/my-sessions', config);
         setSessions(response.data);
       } catch (err) {
         setError('Failed to fetch your sessions. You may need to log in again.');
