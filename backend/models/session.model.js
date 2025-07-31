@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const sessionSchema = new Schema({
-    // This field links a session to the user who created it.
+
     user_id: {
         type: Schema.Types.ObjectId,
-        ref: 'User', // Creates a reference to the 'User' model
+        ref: 'User', 
         required: true
     },
     title: {
@@ -14,7 +14,7 @@ const sessionSchema = new Schema({
         trim: true
     },
     tags: {
-        type: [String], // Defines an array of strings
+        type: [String], 
         default: []
     },
     json_file_url: {
@@ -23,13 +23,11 @@ const sessionSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['draft', 'published'], // Restricts the value to one of these two options
+        enum: ['draft', 'published'], 
         default: 'draft'
     }
 }, {
-    // This option automatically creates and manages:
-    // - createdAt (maps to 'created_at' in the PDF)
-    // - updatedAt (maps to 'updated_at' in the PDF)
+    
     timestamps: true
 });
 

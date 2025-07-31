@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter, useParams } from 'next/navigation';
 
-// This page will handle URLs like /editor/some-id
 export default function EditSessionPage() {
   const params = useParams();
   const id = params.id as string;
@@ -29,7 +28,7 @@ export default function EditSessionPage() {
         const response = await axios.get(`http://localhost:5000/api/sessions/my-sessions/${id}`, config);
         const { title, tags, json_file_url } = response.data;
         setTitle(title);
-        setTags(tags.join(', ')); // Convert array back to comma-separated string
+        setTags(tags.join(', '));
         setJsonFileUrl(json_file_url);
       } catch (err) {
         setError('Failed to load session data.');
@@ -65,12 +64,12 @@ export default function EditSessionPage() {
 
     try {
       if (action === 'draft') {
-        // Use the new PUT route to update the existing draft
+        
         await axios.put(`http://localhost:5000/api/sessions/draft/${id}`, sessionData, config);
       } else if (action === 'publish') {
-        // First, update the draft with the latest changes
+        
         await axios.put(`http://localhost:5000/api/sessions/draft/${id}`, sessionData, config);
-        // Then, publish it
+        
         await axios.post('http://localhost:5000/api/sessions/publish', { id }, config);
       }
       
@@ -90,7 +89,7 @@ export default function EditSessionPage() {
       <div className="w-full max-w-2xl p-8 space-y-6 bg-white rounded-lg shadow-md">
         <h1 className="text-2xl font-bold text-center">Edit Session</h1>
         <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-            {/* Form fields are the same as your create page */}
+            
             <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700">
               Title

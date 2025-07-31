@@ -12,7 +12,7 @@ export default function CreateSessionPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  // Check for login token on page load
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {

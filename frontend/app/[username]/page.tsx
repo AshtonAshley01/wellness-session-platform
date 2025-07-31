@@ -56,7 +56,7 @@ export default function UserProfilePage() {
       {sessions.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sessions.map((session) => (
-            // 1. Wrap the card in a Link component that points to the editor with the session ID
+            
             <Link href={`/editor/${session._id}`} key={session._id}>
               <div className="relative block hover:scale-105 transition-transform duration-200">
                 <SessionCard title={session.title} tags={session.tags} />

@@ -29,7 +29,7 @@ export default function LoginPage() {
         password,
       });
 
-      // Store both the token and the username
+
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.username);
       

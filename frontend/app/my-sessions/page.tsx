@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import SessionCard from '../components/SessionCard'; // Adjusted import path
+import SessionCard from '../components/SessionCard';
 
-// Define a type for the session data
+
 interface Session {
   _id: string;
   title: string;
@@ -21,17 +21,17 @@ export default function MySessionsPage() {
 
   useEffect(() => {
     const fetchMySessions = async () => {
-      // Get the token from localStorage
+      
       const token = localStorage.getItem('token');
 
       if (!token) {
-        // If no token, redirect to login page
+        
         router.push('/login');
         return;
       }
 
       try {
-        // Create axios config with Authorization header
+        
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -43,11 +43,7 @@ export default function MySessionsPage() {
       } catch (err) {
         setError('Failed to fetch your sessions. You may need to log in again.');
         console.error(err);
-        // Optional: handle token expiration by redirecting to login
-        // if (err.response && err.response.status === 401) {
-        //   localStorage.removeItem('token');
-        //   router.push('/login');
-        // }
+        
       } finally {
         setLoading(false);
       }

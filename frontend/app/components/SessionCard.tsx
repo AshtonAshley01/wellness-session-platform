@@ -1,4 +1,3 @@
-// Define a type for the component's props for type safety
 type SessionCardProps = {
     title: string;
     tags: string[];

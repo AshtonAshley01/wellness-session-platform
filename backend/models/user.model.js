@@ -16,7 +16,7 @@ const userSchema = new Schema({
         trim: true,
         lowercase: true
     },
-    // Changed 'password' to 'password_hash' to match assignment
+    
     password_hash: {
         type: String,
         required: [true, 'Password hash is required']
@@ -27,5 +27,5 @@ const userSchema = new Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// Changed from 'export default' to 'module.exports'
+
 module.exports = User;

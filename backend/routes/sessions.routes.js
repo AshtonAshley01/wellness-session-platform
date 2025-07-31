@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// Ensure this line does NOT use curly braces {}
+
 const auth = require('../middleware/auth.middleware');
 const Session = require('../models/session.model');
 
@@ -11,13 +11,13 @@ router.post('/save-draft', auth, async (req, res) => {
     const { title, tags, json_file_url } = req.body;
 
     try {
-        // The 'auth' middleware adds the user object (with id) to the request.
+        
         const newSession = new Session({
             title,
             tags,
             json_file_url,
             user_id: req.user.id,
-            status: 'draft' // Explicitly set status to draft
+            status: 'draft' 
         });
 
         const session = await newSession.save();
@@ -42,12 +42,12 @@ router.put('/draft/:id', auth, async (req, res) => {
             return res.status(404).json({ msg: 'Session not found' });
         }
 
-        // Make sure user owns the session
+        
         if (session.user_id.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'Not authorized' });
         }
 
-        // Update fields
+        
         session.title = title;
         session.tags = tags;
         session.json_file_url = json_file_url;
@@ -75,7 +75,7 @@ router.post('/publish', auth, async (req, res) => {
             return res.status(404).json({ msg: 'Session not found' });
         }
 
-        // Make sure user owns the session
+        
         if (session.user_id.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'Not authorized' });
         }
@@ -115,7 +115,7 @@ router.get('/my-sessions/:id', auth, async (req, res) => {
             return res.status(404).json({ msg: 'Session not found' });
         }
 
-        // Make sure user owns the session
+        
         if (session.user_id.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'Not authorized' });
         }

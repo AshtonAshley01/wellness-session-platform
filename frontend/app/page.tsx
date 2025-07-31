@@ -1,10 +1,10 @@
-'use client'; // Needed for hooks like useState and useEffect
+'use client'; 
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import SessionCard from './components/SessionCard';
 
-// Define a type for the session data to ensure type safety
+
 interface Session {
   _id: string;
   title: string;
@@ -30,7 +30,7 @@ export default function DashboardPage() {
     };
 
     fetchSessions();
-  }, []); // The empty array ensures this runs only once when the component mounts
+  }, []);
 
   if (loading) {
     return <p className="text-center mt-8">Loading sessions...</p>;

@@ -2,20 +2,20 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// Corrected: Using CommonJS 'require' to import the User model
+
 const User = require('../models/user.model');
 
 // POST /api/auth/register - User registration
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 
-    // Basic validation
+    
     if (!username || !email || !password) {
         return res.status(400).json({ message: 'Please enter all fields' });
     }
 
     try {
-        // 2. Check if username or email already exists
+        
         let userByEmail = await User.findOne({ email });
         if (userByEmail) {
             return res.status(400).json({ message: 'User with that email already exists' });
@@ -25,7 +25,7 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ message: 'Username is already taken' });
         }
 
-        // 3. Create new user with username
+        
         const newUser = new User({
             username,
             email,
@@ -48,7 +48,7 @@ router.post('/register', async (req, res) => {
             { expiresIn: 3600 },
             (err, token) => {
                 if (err) throw err;
-                // 4. Return username along with the token
+                
                 res.json({ token, username: newUser.username });
             }
         );
@@ -63,32 +63,32 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // Basic validation
+    
     if (!email || !password) {
         return res.status(400).json({ message: 'Please enter all fields' });
     }
 
     try {
-        // Check for user
+        
         let user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // Check password
+        
         const isMatch = await bcrypt.compare(password, user.password_hash);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // Create JWT payload
+        
         const payload = {
             user: {
                 id: user.id
             }
         };
 
-        // Sign the token
+        
         jwt.sign(
             payload,
             process.env.JWT_SECRET,

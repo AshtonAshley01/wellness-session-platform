@@ -6,20 +6,20 @@ import { useState, useEffect } from 'react';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState<string | null>(null); // State to hold the username
+  const [username, setUsername] = useState<string | null>(null); 
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const storedUsername = localStorage.getItem('username'); // Get username from storage
+    const storedUsername = localStorage.getItem('username');
     setIsLoggedIn(!!token);
     setUsername(storedUsername);
-  }, [pathname]); // Re-run the check when the path changes
+  }, [pathname]); 
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('username'); // Remove username on logout
+    localStorage.removeItem('username');
     setIsLoggedIn(false);
     setUsername(null);
     router.push('/login');
@@ -38,7 +38,7 @@ const Navbar = () => {
           </Link>
           {isLoggedIn && username ? (
             <>
-              {/* This link now points to the user's personal dashboard */}
+              
               <Link href={`/${username}`} className="hover:text-blue-600 transition-colors">
                 My Dashboard
               </Link>
