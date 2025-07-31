@@ -1,64 +1,56 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState<string | null>(null); // State to hold the username
   const router = useRouter();
+  const pathname = usePathname();
 
-  // Check for token on component mount and whenever the path changes
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const storedUsername = localStorage.getItem('username'); // Get username from storage
     setIsLoggedIn(!!token);
-  }, []); // Re-run this effect if the user navigates
+    setUsername(storedUsername);
+  }, [pathname]); // Re-run the check when the path changes
 
   const handleLogout = () => {
-    // Remove the token from storage
     localStorage.removeItem('token');
+    localStorage.removeItem('username'); // Remove username on logout
     setIsLoggedIn(false);
-    // Redirect to the login page
+    setUsername(null);
     router.push('/login');
   };
 
   return (
-    <nav className="bg-gray-100 text-gray-950 p-4 shadow-md">
+    <nav className="bg-white text-gray-800 p-4 shadow-md mb-8">
       <div className="container mx-auto flex justify-between items-center">
-      <div className="flex items-center space-x-2">
-      <Image 
-            src="/logo.svg" 
-            alt="Logo" 
-            width={32} 
-            height={32}
-            className="h-8 w-8"
-          />
-        <Link href="/" className="text-xl font-bold">
-          Wellness Sessions
+        <Link href="/" className="text-xl font-bold flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M12 2a5 5 0 0 0-5 5c0 1.66 1.34 3 3 3s3-1.34 3-3a5 5 0 0 0-5-5zM20.94 14.06a9 9 0 0 0-17.88 0"/><path d="M3.5 21.5a2.5 2.5 0 0 1 0-5c1.66 0 3-1.34 3-3s-1.34-3-3-3a2.5 2.5 0 0 1 0-5"/><path d="M20.5 21.5a2.5 2.5 0 0 0 0-5c-1.66 0-3-1.34-3-3s1.34-3 3-3a2.5 2.5 0 0 0 0-5"/></svg>
+            Wellness App
         </Link>
-      </div>
-        <div className="space-x-4 flex items-center">
-          <Link href="/" className="hover:text-gray-300">
+        <div className="space-x-6 flex items-center">
+          <Link href="/" className="hover:text-blue-600 transition-colors">
             Dashboard
           </Link>
-          {isLoggedIn ? (
+          {isLoggedIn && username ? (
             <>
-              <Link href="/my-sessions" className="hover:text-gray-300">
-                My Sessions
-              </Link>
-              <Link href="/editor" className="hover:text-gray-300">
-                Create Session
+              {/* This link now points to the user's personal dashboard */}
+              <Link href={`/${username}`} className="hover:text-blue-600 transition-colors">
+                My Dashboard
               </Link>
               <button
                 onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded"
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition"
               >
                 Logout
               </button>
             </>
           ) : (
-            <Link href="/login" className="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded">
+            <Link href="/login" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition">
               Login
             </Link>
           )}
